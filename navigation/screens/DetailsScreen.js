@@ -57,6 +57,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     width: "100%",
     alignItems: "center",
+    color: "white",
   },
   input: {
     height: 40,
@@ -71,7 +72,6 @@ const styles = StyleSheet.create({
   qrCodeContainer: {
     alignItems: "center",
     marginTop: 20,
-    color: "white",
   },
   placeholderText: {
     fontSize: 16,
