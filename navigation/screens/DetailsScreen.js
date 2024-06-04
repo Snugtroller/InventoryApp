@@ -1,9 +1,38 @@
-import React from "react";
-import { View, Text, TextInput, StyleSheet, Button } from "react-native";
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
 import QRCode from "react-native-qrcode-svg";
 
 export function DetailsScreen({ navigation }) {
-  const [qrCodeText, setQrCodeText] = React.useState("");
+  const [qrCodeText, setQrCodeText] = useState("");
+
+  // Function to save QR code text to database
+  const saveToDatabase = async () => {
+    try {
+      const response = await fetch("http://192.168.0.131:3000/save-qr", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ qrText: qrCodeText }),
+      });
+
+      const data = await response.json();
+      if (data.error) {
+        Alert.alert("Error", data.message);
+      } else {
+        Alert.alert("Success", "QR code has been saved successfully.");
+      }
+    } catch (error) {
+      Alert.alert("Error", "Failed to save QR code.");
+    }
+  };
 
   return (
     <View style={styles.screen}>
@@ -13,27 +42,23 @@ export function DetailsScreen({ navigation }) {
       <View style={styles.inputContainer}>
         <TextInput
           placeholder="Enter Code"
-          placeholderTextColor="gray" // Ensuring the placeholder is visible on black background
+          placeholderTextColor="#888"
           style={styles.input}
           onChangeText={(text) => setQrCodeText(text)}
           value={qrCodeText}
         />
         {qrCodeText ? (
           <View style={styles.qrCodeContainer}>
-            <QRCode value={qrCodeText} size={100} />
+            <QRCode value={qrCodeText} size={150} />
           </View>
         ) : (
           <Text style={styles.placeholderText}>
             Enter text to generate QR code
           </Text>
         )}
-        <View style={styles.buttonContainer}>
-          <Button
-            onPress={() => alert("on progress")}
-            title="Save to Database"
-            color="red"
-          />
-        </View>
+        <TouchableOpacity style={styles.button} onPress={saveToDatabase}>
+          <Text style={styles.buttonText}>Save to Database</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -42,45 +67,66 @@ export function DetailsScreen({ navigation }) {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    alignItems: "flex-start",
+    alignItems: "center",
     justifyContent: "flex-start",
     padding: 20,
-    paddingTop: 50, // Adding some padding to push the content a bit down from the top
-    backgroundColor: "black", // Setting the background color to black
+    paddingTop: 50,
+    backgroundColor: "#1e1e1e",
   },
   title: {
-    fontSize: 25,
+    fontSize: 28,
     fontWeight: "bold",
     marginBottom: 20,
-    color: "white", // Changing the text color to white for better visibility
+    color: "#fff",
   },
   inputContainer: {
     width: "100%",
     alignItems: "center",
-    color: "white",
   },
   input: {
-    height: 40,
-    borderColor: "red",
+    height: 50,
+    borderColor: "#ff5c5c",
     borderWidth: 1,
-    borderRadius: 5,
-    paddingHorizontal: 10,
+    borderRadius: 10,
+    paddingHorizontal: 15,
     marginBottom: 20,
     width: "100%",
-    color: "white", // Changing input text color to white for better visibility
+    color: "#fff",
+    backgroundColor: "#2e2e2e",
   },
   qrCodeContainer: {
     alignItems: "center",
     marginTop: 20,
+    backgroundColor: "#fff",
+    padding: 10,
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 5,
   },
   placeholderText: {
     fontSize: 16,
-    color: "gray",
+    color: "#888",
     marginTop: 20,
   },
-  buttonContainer: {
-    marginTop: 20,
-    width: "100%",
+  button: {
+    marginTop: 30,
+    backgroundColor: "#ff5c5c",
+    paddingVertical: 15,
+    paddingHorizontal: 50,
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 5,
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });
 
