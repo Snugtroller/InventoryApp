@@ -55,6 +55,34 @@ app.post("/save-qr", (req, res) => {
   });
 });
 
+app.get("/get-last-qr-codes", (req, res) => {
+  pool.getConnection((err, connection) => {
+    if (err) {
+      console.error("Database connection failed:", err.stack);
+      return res
+        .status(500)
+        .json({ error: true, message: "Database connection failed" });
+    }
+
+    const selectQuery = "SELECT * FROM qr_code ORDER BY date_time DESC LIMIT 5";
+    connection.query(selectQuery, (error, results, fields) => {
+      connection.release(); // Release connection
+
+      if (error) {
+        console.error("Failed to fetch data:", error);
+        return res
+          .status(500)
+          .json({ error: true, message: "Failed to fetch data" });
+      }
+
+      res.json({
+        error: false,
+        data: results.reverse(), // Reverse to show in ascending order
+      });
+    });
+  });
+});
+
 // Start server
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
