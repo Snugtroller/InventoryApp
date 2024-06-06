@@ -8,7 +8,7 @@ export default function DatabaseScreen({ navigation }) {
     const fetchQrCodes = async () => {
       try {
         const response = await fetch(
-          "http://192.168.0.131:3000/get-last-qr-codes"
+          "http://192.168.0.113:3000/get-last-qr-codes"
         );
         const data = await response.json();
         if (!data.error) {

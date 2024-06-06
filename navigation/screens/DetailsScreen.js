@@ -9,13 +9,12 @@ import {
 } from "react-native";
 import QRCode from "react-native-qrcode-svg";
 
-export function DetailsScreen({ navigation }) {
+export default function DetailsScreen({ navigation }) {
   const [qrCodeText, setQrCodeText] = useState("");
 
-  // Function to save QR code text to database
   const saveToDatabase = async () => {
     try {
-      const response = await fetch("http://192.168.0.131:3000/save-qr", {
+      const response = await fetch("http://192.168.0.113:3000/save-qr", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -32,6 +31,13 @@ export function DetailsScreen({ navigation }) {
     } catch (error) {
       Alert.alert("Error", "Failed to save QR code.");
     }
+  };
+
+  const handleScannedQrCode = async () => {
+    Alert.alert(
+      "Scanned QR Code",
+      "This button would initiate QR code scanning functionality."
+    );
   };
 
   return (
@@ -60,6 +66,9 @@ export function DetailsScreen({ navigation }) {
           <Text style={styles.buttonText}>Save to Database</Text>
         </TouchableOpacity>
       </View>
+      <TouchableOpacity style={styles.scanButton} onPress={handleScannedQrCode}>
+        <Text style={styles.scanButtonText}>Scan QR Code</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -74,10 +83,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#1e1e1e",
   },
   title: {
-    fontSize: 28,
+    fontSize: 32,
     fontWeight: "bold",
     marginBottom: 20,
-    color: "#fff",
+    color: "#ffffff",
+    textAlign: "center",
   },
   inputContainer: {
     width: "100%",
@@ -91,43 +101,69 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     marginBottom: 20,
     width: "100%",
-    color: "#fff",
-    backgroundColor: "#2e2e2e",
+    color: "#ffffff",
+    backgroundColor: "#333333",
   },
   qrCodeContainer: {
     alignItems: "center",
     marginTop: 20,
-    backgroundColor: "#fff",
-    padding: 10,
+    backgroundColor: "#444444",
+    padding: 20,
     borderRadius: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
+    shadowColor: "#000000",
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.8,
-    shadowRadius: 2,
+    shadowRadius: 4,
     elevation: 5,
   },
   placeholderText: {
     fontSize: 16,
-    color: "#888",
+    color: "#bbbbbb",
     marginTop: 20,
+    paddingVertical: 20,
+    paddingHorizontal: 60,
+    borderRadius: 10,
+    textAlign: "center",
+    shadowColor: "#000000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.8,
+    shadowRadius: 4,
+    elevation: 5,
   },
   button: {
     marginTop: 30,
-    backgroundColor: "#ff5c5c",
+    backgroundColor: "#A91D3A",
     paddingVertical: 15,
     paddingHorizontal: 50,
     borderRadius: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
+    shadowColor: "#000000",
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.8,
-    shadowRadius: 2,
+    shadowRadius: 4,
     elevation: 5,
   },
   buttonText: {
-    color: "#fff",
+    color: "#ffffff",
     fontSize: 16,
     fontWeight: "bold",
+    textAlign: "center",
+  },
+  scanButton: {
+    marginTop: 30,
+    backgroundColor: "#3A1DA9",
+    paddingVertical: 15,
+    paddingHorizontal: 50,
+    borderRadius: 10,
+    shadowColor: "#000000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.8,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  scanButtonText: {
+    color: "#ffffff",
+    fontSize: 16,
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });
-
-export default DetailsScreen;
