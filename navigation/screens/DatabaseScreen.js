@@ -27,7 +27,7 @@ export default function DatabaseScreen({ navigation }) {
   const renderItem = ({ item }) => (
     <View style={styles.row}>
       <Text style={styles.cell}>{item.S_No}</Text>
-      <Text style={styles.cell}>{item.ID}</Text>
+      <Text style={styles.cell}>{item.Gen_ID}</Text>
       <Text style={styles.cell}>{item.date_time}</Text>
     </View>
   );
@@ -39,9 +39,9 @@ export default function DatabaseScreen({ navigation }) {
       </Text>
       <View style={styles.table}>
         <View style={styles.row}>
-          <Text style={styles.headerCell}>S_No</Text>
-          <Text style={styles.headerCell}>ID</Text>
-          <Text style={styles.headerCell}>Date Time</Text>
+          <Text style={styles.headerCell}>S.No</Text>
+          <Text style={styles.headerCell}>Gen</Text>
+          <Text style={styles.headerCell}>Gen Time</Text>
         </View>
         <FlatList
           data={qrCodes}
