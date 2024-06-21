@@ -18,6 +18,14 @@ export default function DetailsScreen({ navigation }) {
   const [isScanning, setIsScanning] = useState(false);
   const [scanned, setScanned] = useState(false);
 
+  useEffect(() => {
+    (async () => {
+      const { status } = await requestPermission();
+      if (status !== "granted") {
+        Alert.alert("Permission to access camera was denied");
+      }
+    })();
+  }, []);
   const saveToDatabase = async () => {
     try {
       const response = await fetch("http://192.168.0.113:3000/save-qr", {
